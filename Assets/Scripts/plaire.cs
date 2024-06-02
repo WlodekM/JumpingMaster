@@ -25,11 +25,22 @@ public class plaire : MonoBehaviour
     void Update()
     {
         float sped = Input.GetAxis("Horizontal") * speed * Time.deltaTime * 100;
-        bool isTurning = (0 > sped && 0 < rb2d.velocity.x);
+        bool isTurning = (0 > sped && 0 < rb2d.velocity.x) || (sped > 0 && rb2d.velocity.x < 0);
         string turningmsg = isTurning ? "\n(Turning)" : "";
+        if(Input.GetKeyDown("W") || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
+        {
+            //Do jump
+        }
         dbgText.text = $"Velocity: ({rb2d.velocity.x}, {rb2d.velocity.y}){turningmsg}";
         if (isTurning) sped *= 5;
-        if (Mathf.Abs(rb2d.velocity.x + sped) >= MaxSpeed) return;
+        if(rb2d.velocity.x > MaxSpeed)
+        {
+            sped = MaxSpeed - rb2d.velocity.x;
+        }
+        if (rb2d.velocity.x < -MaxSpeed)
+        {
+            sped = -MaxSpeed - rb2d.velocity.x;
+        }
         Debug.Log(sped);
         rb2d.AddForce(new Vector2(sped, 0f));
     }
