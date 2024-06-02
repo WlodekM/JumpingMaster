@@ -10,8 +10,14 @@ public class plaire : MonoBehaviour
     private float speed = 5f;
     [SerializeField]
     private float MaxSpeed = 5f;
+    [SerializeField]
+    private float jumpHeight = 5f;
+
+    private int jumpCount = 0;
 
     private Text dbgText;
+
+    private bool touching;
 
 
     // Start is called before the first frame update
@@ -21,17 +27,31 @@ public class plaire : MonoBehaviour
         rb2d = gameObject.GetComponent<Rigidbody2D>();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        touching = true;
+        jumpCount = 0;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        touching = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
         float sped = Input.GetAxis("Horizontal") * speed * Time.deltaTime * 100;
         bool isTurning = (0 > sped && 0 < rb2d.velocity.x) || (sped > 0 && rb2d.velocity.x < 0);
         string turningmsg = isTurning ? "\n(Turning)" : "";
-        if(Input.GetKeyDown("W") || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
-        {
-            //Do jump
-        }
         dbgText.text = $"Velocity: ({rb2d.velocity.x}, {rb2d.velocity.y}){turningmsg}";
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && (touching || jumpCount < 2))
+        {
+            dbgText.text = $"Velocity: ({rb2d.velocity.x}, {rb2d.velocity.y}){turningmsg}\n(JUMPING, jc: {jumpCount})";
+            rb2d.AddForce(new Vector2(0, jumpHeight * 100));
+            jumpCount++;
+            return;
+        }
         if (isTurning) sped *= 5;
         if(rb2d.velocity.x > MaxSpeed)
         {
