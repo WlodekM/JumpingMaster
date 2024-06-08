@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// dani is love dani is life
+// unity's particle system, my fellow boners
+
 public class plaire : MonoBehaviour
 {
-    public float health = 100f; // publick
+    public float health = 3f; // publick
     Rigidbody2D rb2d;
     [SerializeField]
     private float speed = 5f;
@@ -13,6 +16,8 @@ public class plaire : MonoBehaviour
     private float MaxSpeed = 5f;
     [SerializeField]
     private float jumpHeight = 5f;
+    [SerializeField]
+    private Vector2 startPosition = new Vector2(0f, 0f);
 
     private int jumpCount = 0;
 
@@ -32,6 +37,15 @@ public class plaire : MonoBehaviour
     {
         touching = true;
         jumpCount = 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("spike"))
+        {
+            health--;
+            transform.position = startPosition;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
