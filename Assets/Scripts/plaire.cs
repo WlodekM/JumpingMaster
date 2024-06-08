@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class plaire : MonoBehaviour
 {
+    public float health = 100f; // publick
     Rigidbody2D rb2d;
     [SerializeField]
     private float speed = 5f;
