@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class Healthbarscript : MonoBehaviour
 {
-    // add array of heart image objects
-    // make function to update healthbar
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if(collision.CompareTag("spike"))
+        {
+            Destroy(gameObject);
+            Debug.LogError("L");
+        }
     }
 }
