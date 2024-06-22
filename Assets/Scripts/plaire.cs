@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class plaire : MonoBehaviour
 {
-    public float health = 3f; // publick
+    public int health = 3; // publick
     Rigidbody2D rb2d;
     [SerializeField]
     private float speed = 5f;
@@ -44,7 +44,8 @@ public class plaire : MonoBehaviour
         if(collision.CompareTag("spike"))
         {
             health--;
-            transform.position = startPosition;
+            //transform.position = startPosition;
+            FindObjectOfType<Healthbarscript>().update();
         }
     }
 
@@ -76,7 +77,6 @@ public class plaire : MonoBehaviour
         {
             sped = -MaxSpeed - rb2d.velocity.x;
         }
-        Debug.Log(sped);
         rb2d.AddForce(new Vector2(sped, 0f));
     }
 }

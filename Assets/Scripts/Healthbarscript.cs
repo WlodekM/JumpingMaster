@@ -1,15 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Healthbarscript : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    [SerializeField]
+    GameObject[] hearts;
+    [SerializeField]
+    GameObject playerObj;
+    [SerializeField]
+    Sprite emptyHeartSprite;
+    [SerializeField]
+    Sprite fullHeartSprite;
+    plaire player;
+    private void Start()
     {
-        if(collision.CompareTag("spike"))
+        player = playerObj.GetComponent<plaire>();
+    }
+    public void update()
+    {
+        for (int i = 0; i < hearts.Length; i++)
         {
-            Destroy(gameObject);
-            Debug.LogError("L");
+            Debug.Log($"{i} > {player.health}");
+            GameObject heart = hearts[i];
+            if(i < player.health)
+            {
+                heart.GetComponent<Image>().sprite = fullHeartSprite;
+            } else
+            {
+                heart.GetComponent<Image>().sprite = emptyHeartSprite;
+            }
         }
+        if(player.health == 0)
+        {
+            Time.timeScale = 0;
+        }
+        Debug.LogError("L");
     }
 }
