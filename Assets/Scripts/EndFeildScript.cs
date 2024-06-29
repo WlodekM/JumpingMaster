@@ -9,6 +9,7 @@ public class EndFeildScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
-        show.active = true;
+        show.SetActive(true);
+        Time.timeScale = 0;
     }
 }
