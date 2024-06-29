@@ -8,6 +8,7 @@ TagManager:
   - spike
   - coin
   - checkpoint
+  - white
   layers:
   - Default
   - TransparentFX
