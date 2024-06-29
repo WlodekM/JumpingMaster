@@ -19,6 +19,8 @@ public class plaire : MonoBehaviour
     [SerializeField]
     private Vector2 startPosition = new Vector2(0f, 0f);
 
+    private float notTouchingTime = 0f;
+
     private int jumpCount = 0;
 
     private Text dbgText;
@@ -37,6 +39,7 @@ public class plaire : MonoBehaviour
     {
         touching = true;
         jumpCount = 0;
+        notTouchingTime = 1f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -49,6 +52,12 @@ public class plaire : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (!touching && notTouchingTime > 0f) notTouchingTime -= 0.5f;
+        if (notTouchingTime <= 0f) notTouchingTime = 0f;
+    }
+
     private void OnCollisionExit2D(Collision2D collision)
     {
         touching = false;
@@ -58,18 +67,20 @@ public class plaire : MonoBehaviour
     void Update()
     {
         float sped = Input.GetAxis("Horizontal") * speed * Time.deltaTime * 100;
+        bool bCanAppllyInAirBoostToCharacterSpeed = !touching && notTouchingTime <= 0.5f;
         bool isTurning = (0 > sped && 0 < rb2d.velocity.x) || (sped > 0 && rb2d.velocity.x < 0);
         string turningmsg = isTurning ? "\n(Turning)" : "";
-        dbgText.text = $"Velocity: ({rb2d.velocity.x}, {rb2d.velocity.y}){turningmsg}";
+        dbgText.text = $"Velocity: ({rb2d.velocity.x}, {rb2d.velocity.y}){turningmsg}\n{bCanAppllyInAirBoostToCharacterSpeed}\nntt: {notTouchingTime}";
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && (touching || jumpCount < 2))
         {
-            dbgText.text = $"Velocity: ({rb2d.velocity.x}, {rb2d.velocity.y}){turningmsg}\n(JUMPING, jc: {jumpCount})";
+            //dbgText.text = $"Velocity: ({rb2d.velocity.x}, {rb2d.velocity.y}){turningmsg}\n(JUMPING, jc: {jumpCount})";
             rb2d.AddForce(new Vector2(0, jumpHeight * 100));
             jumpCount++;
             return;
         }
         if (isTurning) sped *= 5;
-        if(rb2d.velocity.x > MaxSpeed)
+        if (bCanAppllyInAirBoostToCharacterSpeed && isTurning) sped *= (50 * (1f - notTouchingTime));
+        if (rb2d.velocity.x > MaxSpeed)
         {
             sped = MaxSpeed - rb2d.velocity.x;
         }
