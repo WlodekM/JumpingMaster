@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class plaire : MonoBehaviour
 {
     public int health = 3; // publick
+    public int coins = 0;
     Rigidbody2D rb2d;
     [SerializeField]
     private float speed = 5f;
@@ -18,6 +19,8 @@ public class plaire : MonoBehaviour
     private float jumpHeight = 5f;
     [SerializeField]
     private Vector2 startPosition = new Vector2(0f, 0f);
+
+    private Text coinDisplayText;
 
     private float notTouchingTime = 0f;
 
@@ -32,7 +35,14 @@ public class plaire : MonoBehaviour
     void Start()
     {
         dbgText = GameObject.FindWithTag("debugText").GetComponent<Text>();
+        coinDisplayText = GameObject.Find("CoinDisplay").GetComponent<Text>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
+        updateCoinDisplay();
+    }
+
+    public void updateCoinDisplay()
+    {
+        coinDisplayText.text = $"Coins: {coins}";
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -79,7 +89,7 @@ public class plaire : MonoBehaviour
             return;
         }
         if (isTurning) sped *= 5;
-        if (bCanAppllyInAirBoostToCharacterSpeed && isTurning) sped *= (50 * (1f - notTouchingTime));
+        if (bCanAppllyInAirBoostToCharacterSpeed && isTurning) sped *= (25 * (1f - notTouchingTime));
         if (rb2d.velocity.x > MaxSpeed)
         {
             sped = MaxSpeed - rb2d.velocity.x;
