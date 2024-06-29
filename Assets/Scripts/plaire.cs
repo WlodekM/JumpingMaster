@@ -18,7 +18,7 @@ public class plaire : MonoBehaviour
     [SerializeField]
     private float jumpHeight = 5f;
     [SerializeField]
-    private Vector2 startPosition = new Vector2(0f, 0f);
+    public Vector2 startPosition = new Vector2(0f, 0f);
 
     private Text coinDisplayText;
 
