@@ -6,6 +6,9 @@ TagManager:
   tags:
   - debugText
   - spike
+  - coin
+  - checkpoint
+  - white
   layers:
   - Default
   - TransparentFX
