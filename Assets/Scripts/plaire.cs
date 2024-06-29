@@ -57,7 +57,7 @@ public class plaire : MonoBehaviour
         if(collision.CompareTag("spike"))
         {
             health--;
-            //transform.position = startPosition;
+            transform.position = startPosition;
             FindObjectOfType<Healthbarscript>().update();
         }
     }
